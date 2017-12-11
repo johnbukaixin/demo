@@ -9,6 +9,8 @@ import org.apache.mina.filter.codec.textline.TextLineCodecFactory;
 import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.charset.Charset;
 
@@ -16,7 +18,7 @@ import java.nio.charset.Charset;
  * Created by panta on 2017/12/8.
  */
 public class DemoServer {
-    private IoAcceptor acceptor;
+    private static int port = 9000;
 
     public static void main(String args[]){
         IoAcceptor acceptor = new NioSocketAcceptor();
@@ -32,5 +34,10 @@ public class DemoServer {
         acceptor.getSessionConfig().setReadBufferSize(2048);
         //设置空闲时间，第一个参数定义在确定会话是否空闲时要检查的操作，第二个参数定义在会话被认为是空闲之前必须发生的时间长度（以秒为单位）。
         acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE,10);
+        try {
+            acceptor.bind(new InetSocketAddress(port));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

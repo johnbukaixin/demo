@@ -1,13 +1,11 @@
 package com.peach.demo.lombok;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * create by panta on 2017/12/9
  */
+@ToString(callSuper = true,exclude = {"os"})
 public class Mobile {
 
     @Getter@Setter(AccessLevel.PROTECTED)
