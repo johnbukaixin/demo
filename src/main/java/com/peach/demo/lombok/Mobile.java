@@ -6,6 +6,7 @@ import lombok.*;
  * create by panta on 2017/12/9
  */
 @ToString(callSuper = true,exclude = {"os"})
+@EqualsAndHashCode
 public class Mobile {
 
     @Getter@Setter(AccessLevel.PROTECTED)

@@ -1,14 +1,27 @@
 package com.peach.demo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
-@EnableTransactionManagement
+/**
+ * This example uses Spring Boot’s default RedisConnectionFactory,
+ * an instance of JedisConnectionFactory which is based on the Jedis Redis library.
+ * The connection factory is injected into both the message listener container and the Redis template.
+ */
 @SpringBootApplication
-public class DemoApplication{
-	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
-	}
+@EnableScheduling
+@EnableCaching
+public class DemoApplication {
+
+    public static final Logger logger = LoggerFactory.getLogger("DemoApplication");
+
+    public static void main(String[] args) {
+        ConfigurableApplicationContext ctx = SpringApplication.run(DemoApplication.class, args);
+    }
 }
 
