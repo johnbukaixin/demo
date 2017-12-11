@@ -2,7 +2,7 @@
 A demo project for study
 
 ### base lombok
-* 注解
+* 注解      
 1、@Data    
 2、@Getter、@Setter   
 3、@NotNull  
