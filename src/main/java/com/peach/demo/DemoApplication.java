@@ -25,7 +25,7 @@ public class DemoApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(DemoApplication.class, args);
         IMqttManager mqttManager = ctx.getBean(IMqttManager.class);
-        mqttManager.connect();
+        mqttManager.send("臧三");
     }
 }
 

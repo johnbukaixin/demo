@@ -19,9 +19,11 @@ public class MqttManagerImpl implements IMqttManager{
 
     private MqttClient client;
 
-    private MqttMessage mqttMessage = new MqttMessage();
+    private MqttMessage mqttMessage;
 
     private MemoryPersistence persistence = new MemoryPersistence();
+
+    private boolean flag = false;
 
 
     @Override
@@ -35,12 +37,29 @@ public class MqttManagerImpl implements IMqttManager{
     }
 
     @Override
-    public boolean send(String message) {
-        return false;
+    public void send(String message) {
+        mqttMessage = new MqttMessage(message.getBytes());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (connect()){
+                    mqttMessage.setQos(config.getQos());
+                    try {
+                        client.publish("zhangsan",mqttMessage);
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+        return ;
     }
 
     @Override
     public boolean send(String topicName, String message) {
+        if (connect()){
+
+        }
         return false;
     }
 
@@ -52,16 +71,17 @@ public class MqttManagerImpl implements IMqttManager{
         options.setCleanSession(true);
         try {
             client = new MqttClient(config.getBrokerUrl(),config.getClientId(),persistence);
-            client.connect();
+            client.connect(options);
+            flag = true;
         } catch (MqttException e) {
             e.printStackTrace();
         }
-        return false;
+        return true;
     }
 
     @Override
-    public boolean isConnect() {
-        return false;
+    public boolean isConnect(boolean flag) {
+        return flag;
     }
 
     @Override

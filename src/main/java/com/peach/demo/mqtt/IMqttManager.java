@@ -8,13 +8,13 @@ public interface IMqttManager {
 
     boolean stop();
 
-    boolean send(String message);
+    void send(String message);
 
     boolean send(String topicName, String message);
 
     boolean connect();
 
-    boolean isConnect();
+    boolean isConnect(boolean flag);
 
     boolean subscribe();
 
