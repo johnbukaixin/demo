@@ -16,8 +16,8 @@ public abstract class RedisService<T> {
     @Autowired
     protected RedisTemplate<String,Object> template;
 
-    @Resource
-    protected HashOperations<String,String,T> hashOperations;
+//    @Resource
+//    protected HashOperations<String,String,T> hashOperations;
     /**
      * redis中的key
      * @return
@@ -39,7 +39,7 @@ public abstract class RedisService<T> {
      * @param expire
      */
     public void put(String key,T o,long expire){
-        hashOperations.put(getKey(),key,o);
+//        hashOperations.put(getKey(),key,o);
         if (expire != -1) {
             //设置过期时间
             template.expire(getKey(), expire, TimeUnit.SECONDS);
@@ -51,13 +51,18 @@ public abstract class RedisService<T> {
      * @return
      */
     public Set<String> getAllKey(){
-        Set<String> keys = hashOperations.keys(getKey());
-        return keys;
+//        Set<String> keys = hashOperations.keys(getKey());
+//        return keys;
+        return null;
     }
 
-    public boolean isKey(String key){
-        boolean isKey = hashOperations.hasKey(getKey(),key);
-        return isKey;
+    /**
+     * 判断是否有个key
+     */
+    public boolean hasKey(String key){
+//        boolean hasKey = hashOperations.hasKey(getKey(),key);
+//        return hasKey;
+        return false;
     }
 
 }

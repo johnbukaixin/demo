@@ -1,5 +1,7 @@
 package com.peach.demo;
 
+import com.peach.demo.mqtt.IMqttManager;
+import com.peach.demo.mqtt.MqttManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -22,6 +24,8 @@ public class DemoApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(DemoApplication.class, args);
+        IMqttManager mqttManager = ctx.getBean(IMqttManager.class);
+        mqttManager.connect();
     }
 }
 
