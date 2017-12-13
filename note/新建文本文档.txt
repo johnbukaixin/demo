@@ -1,0 +1,235 @@
+volatile : 阻止变量访问前后的指令重排
+
+复习：
+   集合：
+	1）hashtable和hashmap的区别？
+	   1、hashtable为原生集合类之一，hashmap是集合框架的一部分在java2的1.2版本引入
+	   2、hashtable是同步的而后者不是同步的
+	   3、前者key、值都不能为null，后者可以key可以有一个为null，值可以多个为null
+	   4、后者使用Collections.synchronizedMap(hashMap)达到同步效果（有条件的线程安全）
+	   5、hashmap采用快速失败机制
+	   6、hashmap没办法保证映射的顺序一致不变，但是hashmap有一个子类linkedhashMap可以预知顺序迭代，而hashtable就不容易。
+	2）arraylist和linkedlist区别？
+	   1、arrayList底层是动态数组，linkedlist底层是双向链表
+	   2、对于随机访问，arraylist优于linkedlist，因为后者需要移动指针
+	   3、对于增删操作，总的来说是linkedlist优于arraylist，但是单个数据的时候arraylist可能还要优于linkedlist，而数据一多，linkedlist的效率会
+		  高于arraylist，因为arraylist底层是数组，增加或删除数据不在末尾的话，都需要移动数据
+	3）treemap和hashmap的区别？
+	   1、treemap有序，但是hashmap是无序的，hashmap是通过hashcode快速查找的
+	   2、在map中插入删除，快速定位元素使用hashmap，如果按照顺序遍历，则使用treemap
+	4）list和set的区别？
+	5）hashtable、vector、synchronizedMap、synchronizedList与ConcurrentHashMap、CopyOnWriteArrayList 等的区别？
+	   同步的集合类 Hashtable 和 Vector ，以及同步的包装器类 Collections.synchronizedMap 和 Collections.synchronizedList ，
+	   为 Map 和 List 提供了基本的有条件的线程安全的实现。然而，某些因素使得它们并不适用于具有高度并发性的应用程序中――它们的 
+	   集合范围的单锁特性对于可伸缩性来说是一个障碍，而且，很多时候还必须在一段较长的时间内锁定一个集合，
+	   以防止出现 ConcurrentModificationExceptions异常。 ConcurrentHashMap 和 CopyOnWriteArrayList 实现提供了更高的并发性，
+	   同时还保住了线程安全性，只不过在对其调用者的承诺上打了点折扣。 
+	   ConcurrentHashMap 和 CopyOnWriteArrayList 并不是在您使用 HashMap 或 ArrayList 的任何地方都一定有用，
+	   但是它们是设计用来优化某些特定的公用解决方案的。许多并发应用程序将从对它们的使用中获得好处。
+	集合底层排序
+	集合中基本数据类型的排序，长度小于7时插入排序，否则为快速排序
+	object类型的排序，归并排序，如果数组长度小于7，则采用插入排序使数组有序，
+	否则继续递归归并，完成排序。
+   线程：
+	1）创建线程的方式？优缺点1、3使用接口便于扩展，可以继承其他类，2可以直接通过this获得当前线程，不需要Thread.currentThread()获得
+	   1、实现Runnable接口
+	   new thread(Runnable,threadname)调用start方法
+	   2、通过new Thread或继承Thread创建线程
+	   3、通过通过 Callable 和 Future 创建线程。
+	   实现Callable接口，重写call方法。FutureTask传入new Thread（Runnable,threadname）
+	2）线程的生命周期？
+	  创建状态，就绪状态，运行状态，阻塞状态、死亡状态
+		1、创建状态：通过new关键字或者其他方式创建thread对象，到调用start方法之前
+		2、就绪状态，对象调用start方法，等待资源的时期。
+		3、运行状态：就绪的线程获取cpu资源等，就可以调用run方法执行，此时为运行状态
+		4、阻塞状态：运行状态的线程执行sleep、挂起等方法的，是去cpu等资源，进入阻塞状态，在睡眠时间到，或者获得等待资源的时候进入就绪状态
+		5、死亡状态：一个运行的状态的线程在完成任务或者被其他情况终止的时候，进入死亡状态
+   spring：
+	1）springAop、spring事务管理
+	   在传统的Spring项目中，声明式事务，我们以前通常是配置xml文件，通过配置transactionMannger的advice来配置，
+	   另外还需要配置他的attribute，设置方法的propagation。接下来就是再配置一下aop了，配置切点，切面，以及表示需要用到事务地方的表达式
+	   在Springboot项目中通常使用@EnableTransactionManagement 注解开启是去支持，然后在需要使用的事务的service中加上@Transactional注解，
+	   多个事务类型的时候我们可写一个类实现TransactionManagementConfigurer，返回PlatformTransactionManager，获得事务类型，比如获得jpa的呀等等。
+   sql：
+	几个简单的算法：
+	1）冒泡排序
+   常见设计模式以及场景：
+	   创建型：
+	   建造者模式、单例模式、工厂模式、静态工厂模式、抽象工厂模式
+	   结构型：
+	   适配器模式、代理模式
+	   行为型
+	   观察者模式、责任链模式、迭代器模式、解释器模式（*）
+   java8新特性：
+	   1、Lambda表达式
+	   2、方法引用
+	   3、默认方法
+	   4、新工具
+	   5、Stream Api
+	   6、DateTime Api
+	   7、Optional APi
+	   8、Nashorn, JavaScript 引擎   
+   
+   JVM调优方面：
+    一、CPU使用高
+	    1、us过高（用户）
+		  使用监控工具快速定位哪里有死循环，大计算，对于死循环使用阻塞队列实现，对于大计算建议分配单独的机器做后台运算，实在数据量太大，就做云计算，分布式。
+	    2、sy过高
+		  有效的减少进程数，一般来说让进程数和cpu核数相等，这样既不会浪费资源，也不会频繁线程切换
+	二、内存使用过高
+	    1、及时释放不必要的对象
+	    2、使用对象缓存池缓冲
+	    3、采用合理的缓存失效算法
+	三、Io过高
+	    1、异步读写文件
+	    2、批量读写文件
+	    3、使用缓存技术
+	    4、采用合理的文件读写规则
+	四、网络
+	五、资源消耗不多，但程序运行缓慢
+		1、使用并发包，减少锁竞争
+		2、对于必须使用单线程的使用队列处理
+		3、大量分布式处理
+	六、为充分利用资源
+		1、使用多线程处理
+		2、使用缓存
+		3、修改外部资源，做业务拆分
+	bio和nio区别
+	bio（blocking io）：依赖阻塞模式下使用的普通套接字，当读取、写入或者执行任何操作，
+	                    被调用的操作将调用调用方，直到操作完成。
+    
+	nio Non-blocking IO:本身是基于事件驱动，，一个线程可以请求一个通道将数据读入缓冲区。当通道读取数据到缓冲区时，
+	     线程可以做其他事情。一旦数据被读入缓冲区，线程可以继续处理它。将数据写入通道也是如此。
+	nio Channels and Buffers：数据总是从通道读入缓冲区，从缓冲区写入通道
+	nio Non-blocking IO:本身是基于事件驱动，，一个线程可以请求一个通道将数据读入缓冲区。当通道读取数据到缓冲区时，
+	                    线程可以做其他事情。一旦数据被读入缓冲区，线程可以继续处理它。将数据写入通道也是如此。
+	nio Selectors：选择器是一个对象，可以监视多个通道的事件（如：连接打开，数据到达等）。因此，一个线程可以监视多个通道的数据。单线程处理多通道
+	
+	Channel:FileChannel、DatagramChannel、SocketChannel、ServerSocketChannel
+	buffer: ByteBuffer,CharBuffer,DoubleBuffer,FloatBuffer,IntBuffer,LongBuffer,ShortBuffer
+	
+	Basic Buffer Usage
+	1、写数据到buffer
+	2、调用buffer.flip
+	3、从buffer读数据
+	4、清空buffer
+	
+	mina官网教程
+	http://mina.apache.org/mina-project/userguide/user-guide-toc.html  
+	
+lombok常用注解
+@Data : 实体类的getter，setter方法，toString，hashCode，equals，无参构造函数
+@Getter@Setter(AccessLevel = (protected,private,public,default等等)) 给实体加上getter，setter方法
+@NotNull 属性不能为空
+@CleanUp Io操作时，调用close方法
+@ToString(callSuper = true,exclude = {"address","city","state","zip"}) tostring是否调用父类tostring，排除某些字段
+@HashCode ... 同tostring
+
+ubuntu安装redis
+
+官网教程：https://redis.io/download
+安装:
+$ wget http://download.redis.io/releases/redis-4.0.6.tar.gz
+$ tar xzf redis-4.0.6.tar.gz
+$ cd redis-4.0.6
+$ make
+run redis:
+src/redis-server
+
+初始化配置文件
+wget https://github.com/ijonas/dotfiles/raw/master/etc/init.d/redis-server 
+wget https://github.com/ijonas/dotfiles/raw/master/etc/redis.conf 
+sudo mv redis-server /etc/init.d/redis-server 
+sudo chmod +x /etc/init.d/redis-server 
+sudo mv redis.conf /etc/redis.conf
+新增用户
+sudo useradd peach
+创建数据库文件和日志文件
+sudo mkidr ./redis-log
+sudo mkifr ./redis-db
+初始化文件
+sudo chown redis.redis ./redis-log
+sudo chown redis.redis ./redis-db
+
+
+二、内核参数overcommit_memory 
+
+它是 内存分配策略，可选值：0、1、2。
+
+0， 表示内核将检查是否有足够的可用内存供应用进程使用；如果有足够的可用内存，内存申请允许；否则，内存申请失败，并把错误返回给应用进程。
+1， 表示内核允许分配所有的物理内存，而不管当前的内存状态如何。
+2， 表示内核允许分配超过所有物理内存和交换空间总和的内存	
+	
+	ssh root@45.78.19.188 -p 26439
+   
+springdata with redis
+
+a connection factory
+a messaeg listener container
+a redis remplate
+
+Redis is an advanced key-value store. It is similar to memcached but the dataset is not volatile, and values can be strings, 
+exactly like in memcached, but also lists, sets, and ordered sets. All this data types can be manipulated with atomic 
+operations to push/pop elements, add/remove elements, perform server side union, intersection, difference between sets, and so forth.
+ Redis supports different kind of sorting abilities.
+ 
+ Redis hash 是一个string类型的field和value的映射表，hash特别适合用于存储对象。
+ 
+redis练习
+string
+set name value，get name    一个键最大能存储512MB。
+hash
+Redis hash 是一个键值(key=>value)对集合。
+Redis hash是一个string类型的field和value的映射表，hash特别适合用于存储对象。
+指令  key     field    value
+hmset user1 username zhangsan age 13 password zhangsan
+hgetall user1
+每个 hash 可以存储 232 -1 键值对（40多亿）。
+
+list
+lpush key member
+
+lpush runroob redis
+lpush runroob mongodb
+lrange runoob 0 10(显示的范围)
+
+每个列表可存储40多亿
+
+set
+sadd key member
+删除键
+del key
+DEL 是一个命令， runoobkey 是一个键。 如果键被删除成功，命令执行后输出 (integer) 1，否则将输出 (integer) 0
+
+apollo
+1 消息协议
+	MQTT（Message Queue Telemetry Transport消息队列遥测传输）ibm开发，有可能成为物联网的重要组成部分。提供发布和订阅消息传递，并专门为资源受限的设备和低带宽等，可用于嵌入式系统，低功耗，低带宽。
+	非常合适简单的推动消息传递场景。
+	STOMP（Simple / Streaming Text Oriented Messaging Protocol）流文本定向消息协议，和AMQP一样携带了带有属性的消息的帧和一个帧提
+	AMQP(Advanced Message Queuing Protocol) 使用它的原因是可操作性和互操作性。
+	包含稳定的队列，基于主题的发布和订阅，灵活的路由，事务和安全性。在其他协议失败的情况下用它非常可以
+共同点：基于TCP/IP的消息传输协议
+
+eclips.paho
+MqttMessage
+MqttClient connect,unsubscribe,disConnect,isConnect,unsubscribe，publish 业务有关方法
+MqttConnectOptions
+IMqttMessageListener
+MemoryPersistence 
+ScheduledExecutorService 做重连机制
+ConnectionChangedListener 监视状态
+
+//单线程线程池
+ExecutorService executorService = Executors.newSingleThreadExecutor();
+ //可变尺寸的线程池
+ExecutorService executorService1 = Executors.newCachedThreadPool();
+//指定大小的线程池
+ExecutorService executorService2 = Executors.newFixedThreadPool(3);
+//延迟的线程池
+ScheduledExecutorService pool = Executors.newScheduledThreadPool(2)
+
+什么时候会栈溢出，什么时候内存溢出？
+自己实现动态代理
+自己实现客户端和服务端socket通讯
+
+

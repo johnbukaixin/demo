@@ -19,13 +19,23 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableCaching
 public class DemoApplication {
+    private static int x = 100;
 
     public static final Logger logger = LoggerFactory.getLogger("DemoApplication");
 
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(DemoApplication.class, args);
         IMqttManager mqttManager = ctx.getBean(IMqttManager.class);
-        mqttManager.send("臧三");
+//        mqttManager.send("臧三");
+
+        DemoApplication hs1=new DemoApplication();
+               hs1.x++;
+        DemoApplication  hs2=new DemoApplication();
+                 hs2.x++;
+                hs1=new DemoApplication();
+                 hs1.x++;
+        DemoApplication.x--;
+               System.out.println("x="+x);
     }
 }
 
